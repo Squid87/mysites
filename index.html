@@ -2,9 +2,299 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Привет, мир!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Анталия — путеводитель по морю, Старому городу и главным историческим местам турецкого Средиземноморья.">
+  <meta name="theme-color" content="#063b4c">
+  <title>Анталия — море, история, солнце</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Montserrat+Alternates:ital,wght@0,600;0,700;1,600&family=PT+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sea: #063b4c;
+      --sea-deep: #032832;
+      --water: #0c8292;
+      --stone: #f4f0e7;
+      --paper: #fffdf7;
+      --sun: #ffc857;
+      --flower: #d84074;
+      --ink: #18353c;
+      --line: rgba(6, 59, 76, .16);
+      --display: "Montserrat Alternates", sans-serif;
+      --body: "Manrope", sans-serif;
+      --mono: "PT Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--body);
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+    img { display: block; width: 100%; }
+    ::selection { background: var(--sun); color: var(--sea-deep); }
+
+    .skip-link {
+      position: fixed; left: 1rem; top: -4rem; z-index: 100;
+      padding: .8rem 1rem; background: var(--paper); color: var(--sea);
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      color: white;
+      isolation: isolate;
+      background: var(--sea-deep);
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -2;
+      background: linear-gradient(90deg, rgba(3,40,50,.9) 0%, rgba(3,40,50,.66) 43%, rgba(3,40,50,.14) 82%),
+        url("https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=2000&q=88") center 58% / cover;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: auto 0 0; height: 30%; z-index: -1;
+      background: linear-gradient(transparent, rgba(3,40,50,.58));
+    }
+
+    .nav {
+      width: min(1240px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 24px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,.28);
+    }
+    .brand { font: 700 1.15rem var(--display); text-decoration: none; letter-spacing: .04em; }
+    .brand i { color: var(--sun); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { font-size: .82rem; font-weight: 600; text-decoration: none; letter-spacing: .08em; text-transform: uppercase; }
+    .nav-links a:hover { color: var(--sun); }
+    .nav-cta { padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.5); }
+
+    .hero-inner {
+      width: min(1240px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: clamp(4rem, 10vh, 8rem) 0 3rem;
+      display: grid; grid-template-columns: minmax(0, 1.15fr) .55fr; gap: 3rem;
+      align-items: end;
+    }
+    .eyebrow { display: flex; align-items: center; gap: .75rem; font: .72rem var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 2.5rem; height: 2px; background: var(--sun); }
+    h1 {
+      margin: 1rem 0 1.35rem;
+      max-width: 850px;
+      font: 700 clamp(4.1rem, 9.7vw, 9.2rem)/.78 var(--display);
+      letter-spacing: -.075em;
+    }
+    h1 em { display: block; color: var(--sun); font-style: italic; font-weight: 600; transform: translateX(clamp(1rem, 8vw, 7rem)); }
+    .hero-lead { max-width: 560px; font-size: clamp(1rem, 1.7vw, 1.25rem); line-height: 1.65; color: rgba(255,255,255,.85); }
+    .hero-action { display: inline-flex; align-items: center; gap: 1rem; margin-top: 1.4rem; color: white; text-decoration: none; font-weight: 700; }
+    .hero-action span { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--flower); transition: transform .25s; }
+    .hero-action:hover span { transform: translateY(5px); }
+    .hero-note { align-self: end; justify-self: end; max-width: 270px; padding: 1.3rem; border: 1px solid rgba(255,255,255,.35); backdrop-filter: blur(12px); background: rgba(3,40,50,.28); }
+    .hero-note strong { display: block; margin-bottom: .7rem; color: var(--sun); font: 600 1.1rem var(--display); }
+    .hero-note p { margin: 0; font-size: .86rem; line-height: 1.6; }
+
+    main { overflow: hidden; }
+    .section { padding: clamp(5rem, 10vw, 9rem) max(24px, calc((100vw - 1240px) / 2)); }
+    .section-kicker { margin: 0 0 1rem; color: var(--flower); font: .72rem var(--mono); text-transform: uppercase; letter-spacing: .15em; }
+    h2 { margin: 0; font: 700 clamp(2.6rem, 6vw, 5.6rem)/.95 var(--display); letter-spacing: -.055em; color: var(--sea); }
+
+    .intro { display: grid; grid-template-columns: .78fr 1.22fr; gap: clamp(3rem, 8vw, 8rem); align-items: start; background: var(--stone); }
+    .intro-copy { padding-top: 1rem; }
+    .intro-copy > p { margin: 0 0 2.4rem; max-width: 590px; font-size: clamp(1.1rem, 2vw, 1.4rem); line-height: 1.7; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .fact { padding: 1.2rem .8rem 0 0; border-right: 1px solid var(--line); }
+    .fact:last-child { border: 0; padding-left: 1rem; }
+    .fact b { display: block; margin-bottom: .3rem; color: var(--water); font: 700 1.8rem var(--display); }
+    .fact span { font-size: .72rem; line-height: 1.4; }
+
+    .places { background: var(--sea); color: white; }
+    .places h2 { color: white; max-width: 900px; }
+    .place-grid { display: grid; grid-template-columns: 1.15fr .85fr .85fr; gap: 1rem; margin-top: 4rem; }
+    .place { position: relative; min-height: 530px; overflow: hidden; background: var(--sea-deep); }
+    .place:nth-child(2) { margin-top: 4rem; }
+    .place img { height: 100%; object-fit: cover; opacity: .8; transition: transform .7s cubic-bezier(.2,.8,.2,1), opacity .5s; }
+    .place:hover img { transform: scale(1.045); opacity: .94; }
+    .place::after { content: ""; position: absolute; inset: 35% 0 0; background: linear-gradient(transparent, rgba(3,40,50,.93)); }
+    .place-copy { position: absolute; z-index: 2; inset: auto 1.5rem 1.6rem; }
+    .place-copy small { font: .68rem var(--mono); color: var(--sun); text-transform: uppercase; letter-spacing: .12em; }
+    .place-copy h3 { margin: .55rem 0; font: 600 clamp(1.45rem, 2.6vw, 2.2rem) var(--display); }
+    .place-copy p { margin: 0; max-width: 360px; font-size: .86rem; line-height: 1.6; color: rgba(255,255,255,.78); }
+
+    .history { position: relative; background: var(--paper); }
+    .history-head { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: end; }
+    .history-head p { max-width: 540px; margin: 0 0 .5rem; font-size: 1.1rem; line-height: 1.7; }
+    .timeline { position: relative; margin: 5rem auto 0; max-width: 1040px; }
+    .timeline::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 3px; background: linear-gradient(var(--sun), var(--flower), var(--water)); transform: translateX(-50%); }
+    .era { width: 50%; position: relative; padding: 1rem 4rem 4.5rem 0; text-align: right; }
+    .era:nth-child(even) { margin-left: 50%; padding: 1rem 0 4.5rem 4rem; text-align: left; }
+    .era::after { content: ""; position: absolute; top: 1.25rem; right: -8px; width: 13px; height: 13px; border: 3px solid var(--paper); border-radius: 50%; background: var(--flower); box-shadow: 0 0 0 1px var(--flower); }
+    .era:nth-child(even)::after { left: -8px; }
+    .era time { color: var(--flower); font: .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .era h3 { margin: .55rem 0; font: 600 1.55rem var(--display); color: var(--sea); }
+    .era p { margin: 0; line-height: 1.65; color: #53676c; }
+
+    .plan { background: var(--sun); }
+    .plan-top { display: grid; grid-template-columns: 1.3fr .7fr; align-items: end; gap: 2rem; }
+    .plan-note { max-width: 390px; margin: 0; line-height: 1.65; }
+    .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 4rem; border: 1px solid rgba(6,59,76,.32); }
+    .day { min-height: 300px; padding: 2rem; border-right: 1px solid rgba(6,59,76,.32); transition: background .25s, color .25s; }
+    .day:last-child { border: 0; }
+    .day:hover { background: var(--sea); color: white; }
+    .day small { font: .7rem var(--mono); text-transform: uppercase; letter-spacing: .13em; }
+    .day h3 { margin: 2.8rem 0 1rem; font: 600 1.8rem var(--display); }
+    .day p { margin: 0; line-height: 1.65; font-size: .9rem; }
+
+    footer { padding: 3rem max(24px, calc((100vw - 1240px) / 2)); background: var(--sea-deep); color: white; }
+    .footer-line { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+    .footer-line p { margin: 0; color: rgba(255,255,255,.62); font-size: .8rem; }
+    .to-top { color: var(--sun); font: .72rem var(--mono); text-decoration: none; text-transform: uppercase; letter-spacing: .1em; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s, transform .75s; }
+    .reveal.visible { opacity: 1; transform: none; }
+    :focus-visible { outline: 3px solid var(--sun); outline-offset: 4px; }
+
+    @media (max-width: 850px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero-inner, .intro, .history-head, .plan-top { grid-template-columns: 1fr; }
+      .hero-note { justify-self: start; }
+      h1 { font-size: clamp(4rem, 19vw, 7rem); }
+      h1 em { transform: translateX(.5rem); }
+      .place-grid { grid-template-columns: 1fr; }
+      .place, .place:nth-child(2) { min-height: 430px; margin-top: 0; }
+      .day-grid { grid-template-columns: 1fr; }
+      .day { min-height: auto; border-right: 0; border-bottom: 1px solid rgba(6,59,76,.32); }
+      .day:last-child { border-bottom: 0; }
+    }
+    @media (max-width: 560px) {
+      .nav, .hero-inner { width: min(100% - 32px, 1240px); }
+      .nav-cta { padding: .62rem .7rem; }
+      .facts { grid-template-columns: 1fr; }
+      .fact, .fact:last-child { padding: 1rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
+      .timeline::before { left: 7px; }
+      .era, .era:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 3.5rem 2.5rem; text-align: left; }
+      .era::after, .era:nth-child(even)::after { left: 0; right: auto; top: .2rem; }
+      .footer-line { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Привет, мир!</h1>
+  <a class="skip-link" href="#content">К содержанию</a>
+  <header class="hero" id="top">
+    <nav class="nav" aria-label="Главная навигация">
+      <a class="brand" href="#top">ANTALYA<i>°</i></a>
+      <div class="nav-links">
+        <a href="#places">Места</a>
+        <a href="#history">История</a>
+        <a class="nav-cta" href="#route">Маршрут на 3 дня</a>
+      </div>
+    </nav>
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Турецкое Средиземноморье</div>
+        <h1>Анта<em>лия</em></h1>
+        <p class="hero-lead">Город, где бирюзовое море встречает Таврские горы, а за поворотом старой улочки начинается история длиной более двух тысяч лет.</p>
+        <a class="hero-action" href="#content"><span aria-hidden="true">↓</span> Начать путешествие</a>
+      </div>
+      <aside class="hero-note">
+        <strong>Лучшее время</strong>
+        <p>Апрель–июнь и сентябрь–октябрь: тёплое море, мягкое солнце и меньше людей.</p>
+      </aside>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="section intro">
+      <div>
+        <p class="section-kicker">Анталия в двух словах</p>
+        <h2>Море.<br>Горы.<br>Старый город.</h2>
+      </div>
+      <div class="intro-copy reveal">
+        <p>Анталия — не только курорт, но и живой средиземноморский город. Утром здесь гуляют среди османских домов Калеичи, днём купаются у скалистого берега, а вечером встречают закат в старой гавани.</p>
+        <div class="facts">
+          <div class="fact"><b>300+</b><span>солнечных дней<br>в году</span></div>
+          <div class="fact"><b>2</b><span>главных городских<br>пляжа</span></div>
+          <div class="fact"><b>III век</b><span>воротам Адриана<br>нашей эры</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section places" id="places">
+      <p class="section-kicker">Что увидеть</p>
+      <h2>Три лица одной Анталии</h2>
+      <div class="place-grid">
+        <article class="place reveal">
+          <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1100&q=85" alt="Старинная гавань на побережье Турции" loading="lazy">
+          <div class="place-copy"><small>Город</small><h3>Калеичи</h3><p>Лабиринт улочек, черепичные крыши, римские ворота и гавань у подножия крепостных стен.</p></div>
+        </article>
+        <article class="place reveal">
+          <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=85" alt="Водопад среди зелени" loading="lazy">
+          <div class="place-copy"><small>Природа</small><h3>Дюден</h3><p>Редкий городской водопад, который падает с сорокаметровой скалы прямо в море.</p></div>
+        </article>
+        <article class="place reveal">
+          <img src="https://images.unsplash.com/photo-1593238739364-18cfde30e522?auto=format&fit=crop&w=900&q=85" alt="Пляж между морем и горами" loading="lazy">
+          <div class="place-copy"><small>Море</small><h3>Коньяалты</h3><p>Длинный галечный пляж с прозрачной водой и панорамой Таврских гор.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section history" id="history">
+      <div class="history-head">
+        <div><p class="section-kicker">Краткая история</p><h2>Город сквозь века</h2></div>
+        <p>Анталия меняла империи и имена, но всегда оставалась важным портом на южном побережье Малой Азии.</p>
+      </div>
+      <div class="timeline">
+        <article class="era reveal"><time>II век до н. э.</time><h3>Основание Атталии</h3><p>Царь Пергама Аттал II основал портовый город, названный в его честь.</p></article>
+        <article class="era reveal"><time>133 год до н. э.</time><h3>Римский период</h3><p>Город вошёл в состав Римской державы. В 130 году н. э. в честь императора возвели ворота Адриана.</p></article>
+        <article class="era reveal"><time>V–XII века</time><h3>Византийская крепость</h3><p>Атталия стала важным христианским центром и опорным портом Восточной Римской империи.</p></article>
+        <article class="era reveal"><time>XIII–XV века</time><h3>Сельджуки и османы</h3><p>Город перешёл к сельджукам, а затем вошёл в Османскую империю. Эпохи оставили мечети, минареты и дома Калеичи.</p></article>
+        <article class="era reveal"><time>Сегодня</time><h3>Средиземноморская столица</h3><p>Анталия соединяет большой современный город, курортное побережье и архитектурное наследие многих культур.</p></article>
+      </div>
+    </section>
+
+    <section class="section plan" id="route">
+      <div class="plan-top">
+        <div><p class="section-kicker">Готовый план</p><h2>Три дня без спешки</h2></div>
+        <p class="plan-note">Короткий маршрут, в котором достаточно и моря, и истории — без гонки по достопримечательностям.</p>
+      </div>
+      <div class="day-grid">
+        <article class="day"><small>День первый</small><h3>Старый город</h3><p>Ворота Адриана → улочки Калеичи → минарет Йивли → закат в старой гавани.</p></article>
+        <article class="day"><small>День второй</small><h3>Море и горы</h3><p>Утро на Коньяалты → канатная дорога Тюнектепе → ужин с видом на побережье.</p></article>
+        <article class="day"><small>День третий</small><h3>Вода и древность</h3><p>Нижний Дюден → прогулка на катере → античный театр Аспендоса за городом.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-line">
+      <a class="brand" href="#top">ANTALYA<i>°</i></a>
+      <p>Небольшой путеводитель по большому средиземноморскому городу.</p>
+      <a class="to-top" href="#top">Наверх ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+  </script>
 </body>
 </html>
