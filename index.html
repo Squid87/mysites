@@ -76,6 +76,8 @@
     .nav-links a { font-size: .82rem; font-weight: 600; text-decoration: none; letter-spacing: .08em; text-transform: uppercase; }
     .nav-links a:hover { color: var(--sun); }
     .nav-cta { padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.5); }
+    .menu-toggle { display: none; }
+    .mobile-menu { display: none; }
 
     .hero-inner {
       width: min(1240px, calc(100% - 48px));
@@ -162,7 +164,27 @@
     :focus-visible { outline: 3px solid var(--sun); outline-offset: 4px; }
 
     @media (max-width: 850px) {
-      .nav-links a:not(.nav-cta) { display: none; }
+      .nav-links { display: none; }
+      .nav { position: relative; z-index: 20; }
+      .menu-toggle {
+        display: inline-flex; width: 48px; height: 48px; padding: 0;
+        align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+        color: white; background: rgba(3,40,50,.28); border: 1px solid rgba(255,255,255,.5);
+        cursor: pointer;
+      }
+      .menu-toggle span { width: 20px; height: 2px; background: currentColor; transition: transform .25s, opacity .25s; }
+      .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
+      .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
+      .mobile-menu {
+        display: grid; position: absolute; z-index: 19; top: 88px; left: 24px; right: 24px;
+        padding: .5rem; background: var(--paper); color: var(--sea-deep);
+        box-shadow: 0 24px 60px rgba(3,40,50,.28);
+        opacity: 0; visibility: hidden; transform: translateY(-12px);
+        transition: opacity .25s, transform .25s, visibility .25s;
+      }
+      .mobile-menu.open { opacity: 1; visibility: visible; transform: none; }
+      .mobile-menu a { min-height: 52px; display: flex; align-items: center; padding: 0 1rem; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--line); }
+      .mobile-menu a:last-child { border: 0; color: var(--flower); }
       .hero-inner, .intro, .history-head, .plan-top { grid-template-columns: 1fr; }
       .hero-note { justify-self: start; }
       h1 { font-size: clamp(4rem, 19vw, 7rem); }
@@ -174,13 +196,48 @@
       .day:last-child { border-bottom: 0; }
     }
     @media (max-width: 560px) {
+      .hero { min-height: 100svh; }
+      .hero::before { background-position: 62% center; }
       .nav, .hero-inner { width: min(100% - 32px, 1240px); }
-      .nav-cta { padding: .62rem .7rem; }
+      .nav { padding: max(14px, env(safe-area-inset-top)) 0 14px; }
+      .mobile-menu { top: 78px; left: 16px; right: 16px; }
+      .hero-inner { padding: clamp(3rem, 8vh, 5rem) 0 max(1.5rem, env(safe-area-inset-bottom)); gap: 2rem; align-content: end; }
+      .eyebrow { font-size: .62rem; }
+      h1 { margin: .8rem 0 1.1rem; font-size: clamp(3.8rem, 21vw, 6.5rem); line-height: .82; }
+      .hero-lead { max-width: 31rem; font-size: .98rem; line-height: 1.55; }
+      .hero-action { min-height: 48px; margin-top: .8rem; }
+      .hero-note { max-width: none; width: 100%; padding: 1rem 1.1rem; }
+      .hero-note strong { display: inline; margin-right: .35rem; font-size: .95rem; }
+      .hero-note p { display: inline; font-size: .8rem; }
+      .section { padding: 4.5rem 20px; }
+      h2 { font-size: clamp(2.55rem, 13vw, 4rem); }
+      .intro { gap: 2.3rem; }
+      .intro-copy > p { font-size: 1.05rem; line-height: 1.65; }
       .facts { grid-template-columns: 1fr; }
       .fact, .fact:last-child { padding: 1rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
+      .places { padding-left: 0; padding-right: 0; }
+      .places > .section-kicker, .places > h2 { margin-left: 20px; margin-right: 20px; }
+      .place-grid {
+        display: flex; gap: 12px; margin-top: 2.5rem; padding: 0 20px 1rem;
+        overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      }
+      .place-grid::-webkit-scrollbar { display: none; }
+      .place, .place:nth-child(2) { flex: 0 0 min(84vw, 350px); min-height: 440px; scroll-snap-align: center; }
+      .place:first-child { scroll-snap-align: start; }
+      .place-copy { inset: auto 1.2rem 1.3rem; }
+      .place-copy h3 { font-size: 1.7rem; }
+      .history-head { gap: 1.5rem; }
+      .timeline { margin-top: 3.5rem; }
       .timeline::before { left: 7px; }
       .era, .era:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 3.5rem 2.5rem; text-align: left; }
       .era::after, .era:nth-child(even)::after { left: 0; right: auto; top: .2rem; }
+      .era:last-child { padding-bottom: 0; }
+      .plan { padding-left: 0; padding-right: 0; }
+      .plan-top { padding: 0 20px; }
+      .day-grid { margin-top: 2.5rem; border-left: 0; border-right: 0; }
+      .day { padding: 1.6rem 20px; }
+      .day h3 { margin: 1.2rem 0 .7rem; font-size: 1.55rem; }
+      footer { padding: 2.3rem 20px max(2.3rem, env(safe-area-inset-bottom)); }
       .footer-line { align-items: flex-start; flex-direction: column; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -200,7 +257,15 @@
         <a href="#history">История</a>
         <a class="nav-cta" href="#route">Маршрут на 3 дня</a>
       </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Открыть меню">
+        <span></span><span></span>
+      </button>
     </nav>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#places">Что увидеть</a>
+      <a href="#history">Краткая история</a>
+      <a href="#route">Маршрут на 3 дня</a>
+    </div>
     <div class="hero-inner">
       <div>
         <div class="eyebrow">Турецкое Средиземноморье</div>
@@ -286,6 +351,22 @@
   </footer>
 
   <script>
+    const menuButton = document.querySelector('.menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const closeMenu = () => {
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Открыть меню');
+      mobileMenu.classList.remove('open');
+    };
+    menuButton.addEventListener('click', () => {
+      const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!isOpen));
+      menuButton.setAttribute('aria-label', isOpen ? 'Открыть меню' : 'Закрыть меню');
+      mobileMenu.classList.toggle('open', !isOpen);
+    });
+    mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
